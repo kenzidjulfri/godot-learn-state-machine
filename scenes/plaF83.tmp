@@ -1,0 +1,77 @@
+[gd_scene load_steps=13 format=3 uid="uid://cial733epa45b"]
+
+[ext_resource type="Texture2D" uid="uid://didyhvdiy72ep" path="res://assets/poring_sample.png" id="1_o8j8p"]
+[ext_resource type="Script" path="res://scripts/player.gd" id="1_wsmqu"]
+[ext_resource type="Script" path="res://scripts/nodes/states/state_machine.gd" id="3_hud0q"]
+[ext_resource type="Script" path="res://scripts/nodes/states/state.gd" id="4_8mtdc"]
+[ext_resource type="Script" path="res://scripts/nodes/components/health_component.gd" id="5_wluvp"]
+[ext_resource type="Script" path="res://scripts/nodes/components/hurtbox_component.gd" id="6_76s7m"]
+[ext_resource type="Script" path="res://scripts/nodes/components/attack_component.gd" id="7_hk5dy"]
+[ext_resource type="Script" path="res://scripts/nodes/components/hit_box_collision.gd" id="8_0htd4"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_7rn8w"]
+radius = 8.99999
+height = 56.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_j3e6l"]
+radius = 30.0
+height = 92.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bxuqt"]
+size = Vector2(80, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fmpna"]
+size = Vector2(20, 76)
+
+[node name="Player" type="CharacterBody2D"]
+collision_layer = 0
+script = ExtResource("1_wsmqu")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_o8j8p")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 23)
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_7rn8w")
+
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
+script = ExtResource("3_hud0q")
+initial_state = NodePath("State")
+
+[node name="State" type="Node" parent="StateMachine"]
+script = ExtResource("4_8mtdc")
+
+[node name="HealthComponent" type="Node" parent="."]
+script = ExtResource("5_wluvp")
+
+[node name="HurtboxComponent" type="Area2D" parent="." node_paths=PackedStringArray("health_component")]
+script = ExtResource("6_76s7m")
+health_component = NodePath("../HealthComponent")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtboxComponent"]
+position = Vector2(1, 2)
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_j3e6l")
+debug_color = Color(0, 0.641743, 0.329353, 0.42)
+
+[node name="AttackComponent" type="Area2D" parent="."]
+script = ExtResource("7_hk5dy")
+attack_damage = 100.0
+
+[node name="HitBoxCollision" type="CollisionShape2D" parent="AttackComponent"]
+position = Vector2(88, 1)
+shape = SubResource("RectangleShape2D_bxuqt")
+disabled = true
+debug_color = Color(0.984314, 0.0980392, 0.2, 0.419608)
+script = ExtResource("8_0htd4")
+
+[node name="HitBoxCollision2" type="CollisionShape2D" parent="AttackComponent"]
+position = Vector2(127, -40)
+shape = SubResource("RectangleShape2D_fmpna")
+disabled = true
+debug_color = Color(0.984314, 0.0980392, 0.2, 0.419608)
+script = ExtResource("8_0htd4")
+
+[node name="AttackTimer" type="Timer" parent="AttackComponent"]
+one_shot = true

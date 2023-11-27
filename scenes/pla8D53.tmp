@@ -1,0 +1,122 @@
+[gd_scene load_steps=20 format=3 uid="uid://cial733epa45b"]
+
+[ext_resource type="Texture2D" uid="uid://didyhvdiy72ep" path="res://assets/poring_sample.png" id="1_o8j8p"]
+[ext_resource type="Script" path="res://scripts/player.gd" id="1_wsmqu"]
+[ext_resource type="Texture2D" uid="uid://eckecjeap0a4" path="res://assets/poring_sample_idle.png" id="3_4lemy"]
+[ext_resource type="Script" path="res://scripts/nodes/states/state_machine.gd" id="3_hud0q"]
+[ext_resource type="Texture2D" uid="uid://b6glk28nhbq6i" path="res://assets/poring_sample_attack.png" id="4_6k018"]
+[ext_resource type="Script" path="res://scripts/idle_state.gd" id="5_tnfq1"]
+[ext_resource type="Script" path="res://scripts/nodes/components/health_component.gd" id="5_wluvp"]
+[ext_resource type="Script" path="res://scripts/nodes/components/hurtbox_component.gd" id="6_76s7m"]
+[ext_resource type="Script" path="res://scripts/move_state.gd" id="6_suji7"]
+[ext_resource type="Script" path="res://scripts/attack_state.gd" id="7_dl1xn"]
+[ext_resource type="Script" path="res://scripts/nodes/components/attack_component.gd" id="7_hk5dy"]
+[ext_resource type="Script" path="res://scripts/nodes/components/hit_box_collision.gd" id="8_0htd4"]
+
+[sub_resource type="Animation" id="Animation_lbj82"]
+resource_name = "attack"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SpriteMain:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.4),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("4_6k018")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = false
+tracks/1/path = NodePath("SpriteMain:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1.1, 0.8), Vector2(1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("SpriteMain:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.4, 0.7, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, -20), Vector2(0, 0)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".:scale")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1.1, 0.8), Vector2(1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_eks8f"]
+resource_name = "idle"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SpriteMain:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("3_4lemy")]
+}
+
+[sub_resource type="Animation" id="Animation_ajdi7"]
+resource_name = "move"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SpriteMain:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.3),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("1_o8j8p")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1.05, 0.9), Vector2(1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_otqso"]
+_data = {
+"attack": SubResource("Animation_lbj82"),
+"idle": SubResource("Animation_eks8f"),
+"move": SubResource("Animation_ajdi7")
+}
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_7rn8w"]
+radius = 8.99999
+height = 56.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_j3e6l"]
+radius = 3

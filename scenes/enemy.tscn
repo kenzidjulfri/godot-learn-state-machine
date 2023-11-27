@@ -1,0 +1,50 @@
+[gd_scene load_steps=9 format=3 uid="uid://bova6vfr325ot"]
+
+[ext_resource type="Script" path="res://scripts/enemy.gd" id="1_kg5ge"]
+[ext_resource type="Texture2D" uid="uid://didyhvdiy72ep" path="res://assets/poring_sample.png" id="1_u8hml"]
+[ext_resource type="Script" path="res://scripts/nodes/states/state_machine.gd" id="2_03e1c"]
+[ext_resource type="Script" path="res://scripts/nodes/states/state.gd" id="3_ncy3c"]
+[ext_resource type="Script" path="res://scripts/nodes/components/hurtbox_component.gd" id="5_44xaf"]
+[ext_resource type="Script" path="res://scripts/nodes/components/health_component.gd" id="6_2nscr"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_mdlkf"]
+radius = 7.0
+height = 54.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_0hrhr"]
+radius = 30.0
+height = 92.0
+
+[node name="Enemy" type="CharacterBody2D"]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("1_kg5ge")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(0.117647, 0.2, 0.0352941, 1)
+texture = ExtResource("1_u8hml")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 25)
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_mdlkf")
+
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
+script = ExtResource("2_03e1c")
+initial_state = NodePath("IdleState")
+
+[node name="IdleState" type="Node" parent="StateMachine"]
+script = ExtResource("3_ncy3c")
+
+[node name="HurtboxComponent" type="Area2D" parent="." node_paths=PackedStringArray("health_component")]
+script = ExtResource("5_44xaf")
+health_component = NodePath("../HealthComponent")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtboxComponent"]
+position = Vector2(1, 2)
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_0hrhr")
+debug_color = Color(0, 0.641743, 0.329353, 0.42)
+
+[node name="HealthComponent" type="Node" parent="."]
+script = ExtResource("6_2nscr")

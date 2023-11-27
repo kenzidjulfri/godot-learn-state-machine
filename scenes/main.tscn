@@ -1,0 +1,36 @@
+[gd_scene load_steps=6 format=3 uid="uid://blnh4crjw43gb"]
+
+[ext_resource type="PackedScene" uid="uid://cial733epa45b" path="res://scenes/player.tscn" id="1_gfdfu"]
+[ext_resource type="PackedScene" uid="uid://bova6vfr325ot" path="res://scenes/enemy.tscn" id="2_vpq0o"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_ixqll"]
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_kc2ip"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vyxpi"]
+size = Vector2(19.9493, 15.7986)
+
+[node name="Main" type="Node2D"]
+
+[node name="Ground" type="StaticBody2D" parent="."]
+position = Vector2(576, 344)
+scale = Vector2(43.378, 11.52)
+collision_layer = 3
+metadata/_edit_group_ = true
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="Ground"]
+position = Vector2(-0.0230549, 0.520833)
+scale = Vector2(26.9261, 4.86111)
+mesh = SubResource("BoxMesh_ixqll")
+texture = SubResource("CanvasTexture_kc2ip")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ground"]
+position = Vector2(-0.0230532, 0.520834)
+scale = Vector2(1.34972, 0.307692)
+shape = SubResource("RectangleShape2D_vyxpi")
+
+[node name="Enemy" parent="." instance=ExtResource("2_vpq0o")]
+position = Vector2(864, 104)
+
+[node name="Player" parent="." instance=ExtResource("1_gfdfu")]
+position = Vector2(577, 270)
